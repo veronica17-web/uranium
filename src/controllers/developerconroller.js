@@ -12,12 +12,18 @@ const scholarship=async function (req,res) {
         res.send({msg:female})
     }
 
-const details = async function( req, res){
-   const program = await batchmodule.find( { 'program': "625d8eb287cdde4e8e0d31f4"} )
-    const developer = await developerModel.find( {"persentage":{$gte:70}})
-    res.send( { developer , program})
-}
+// const details = async function( req, res){
+//    const program = await batchmodule.find( { 'program': "625d8eb287cdde4e8e0d31f4"} )
+//     const developer = await developerModel.find( {"persentage":{$gte:70}})
+//     res.send( { developer , program})
+// }
 
+const details = async function( req, res){
+    let batch_id = await batchmodule.find({name: req.query.name}) 
+    
+    let eligible = await developerModel.find({program : batch_id, persentage : {$gte : req.query.persentage}}).select({ name :1 , gender : 1, persentage : 1 , _id :  0})
+res.send( eligible)
+}
 
 
 
